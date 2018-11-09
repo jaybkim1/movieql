@@ -47,3 +47,21 @@ export const getSuggestions = async id => {
     });
     return movies; 
 };
+
+
+// movie triggers an Error : Let's debug at home
+// query {
+//     # movie(id: 7893) {
+//         #   id
+//         #   title
+//         #   rating
+//         # medium_cover_image
+//         #
+//     }
+//     suggestions(id: 7893) {
+//         id
+//         title
+//         medium_cover_image
+//         rating
+//     }
+// }
