@@ -1,27 +1,49 @@
-import fetch from "node-fetch";
+// node-fetch to axios for HTTP client 
+// https://medium.com/@jeffrey.allen.lewis/http-requests-compared-why-axios-is-better-than-node-fetch-more-secure-can-handle-errors-better-39fde869a4a6
+import axios from "axios";
 
-const API_URL = "https://yts.am/api/v2/list_movies.json";
+const BASE_URL = "https://yts.am/api/v2/";
+const LIST_MOVIES_URL = `${BASE_URL}list_movies.json`;
+const MOVIE_DETAILS_URL = `${BASE_URL}movie_details.json`;
+const MOVIE_SUGGESTIONS_URL = `${BASE_URL}movie_suggestions.json`;
 
-export const getMovies = (limit, rating) => {
-    let REQUEST_URL = API_URL;
-    if (limit > 0) {
-        REQUEST_URL += `?limit=${limit}`;
-    }
-    if (rating > 0) {
-        REQUEST_URL += `&minimum_rating=${rating}`;
-    }
-    return fetch(REQUEST_URL)
-        .then(res => res.json())
-        .then(json => json.data.movies);
+export const getMovies = async (limit, rating) => {
+    const {
+        data: {
+            data: { movies }
+        }
+    } = await axios(LIST_MOVIES_URL, {
+        params: {
+            limit,
+            minimum_rating: rating
+        }
+    });
+    return movies;
 };
 
+// Error: Error: Expected Iterable, but did not find one for field Query.movie. #13
+export const getMovie = async id => {
+    const {
+        data: {
+            data: { movie }
+        }
+    } = await axios(MOVIE_DETAILS_URL, {
+        params: {
+            movie_id: id
+        }
+    });
+    return movie;
+};
 
-// GraphQL Query
-// query {
-//     movies(limit: 5, rating: 8.5) {
-//         id
-//         title
-//         rating
-//         language
-//     }
-// }
+export const getSuggestions = async id => {
+    const {
+        data: {
+            data: { movies }
+        }
+    } = await axios(MOVIE_SUGGESTIONS_URL, {
+        params: {
+            movie_id: id
+        }
+    });
+    return movies; 
+};
