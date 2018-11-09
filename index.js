@@ -7,3 +7,5 @@ const server = new GraphQLServer({
 });
 
 server.start(() => console.log("GraphQL Server Running"));
+
+// Mutation is used for when the database changes state
